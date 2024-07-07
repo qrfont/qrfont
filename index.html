@@ -8,20 +8,112 @@
   <script src="https://unpkg.com/@chenfengyuan/vue-qrcode@2"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
-    /* You can add your global styles here */
+    
+<style>
+body, html {
+  margin: 0;
+  padding: 0;
+}
+.container-white {
+  text-align: left;
+  margin-top: 0px;
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  /* display: grid; */
+  place-items: center;
+}
+.gradation {
+  height: 3ㄴ0px; /* Set the height to 50 pixels */
+  width: 100%; /* Set the width to 100% of its container */
+  background: linear-gradient(to right, #2bc0e4ff, #ffd4b5ff); /* Define the horizontal gradient */
+}
+.gradation-dark {
+  height: 3ㄴ0px; /* Set the height to 50 pixels */
+  width: 100%; /* Set the width to 100% of its container */
+  background: linear-gradient(to right, rgb(0, 104, 130), rgb(0, 156, 84)); /* Define the horizontal gradient */
+}
+
+nav {
+  width: 80%;
+  padding: 15px 10px 20px 15px;
+  margin: 0px auto 0px;  /* bottom menu line margin: 0px auto -4px; */
+  /* background-color: hsl(0, 0%, 100%); */
+  /* box-shadow: 0 1px 3px #ccc; */
+
+}
+.nav-sub {
+  width: 80%;
+  /* height: 200px; */
+  /* padding: 15px 10px 20px 15px; */
+  margin: 10px auto 10px;
+  background-color: hsl(0, 0%, 100%);
+  color: rgb(117, 117, 117);
+  /* padding: 15px 10px 20px 15px; */
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+}
+.nav-sub-link {
+  color: rgb(117, 117, 117);
+  text-decoration: none;
+
+}
+nav .nav-logo {
+  padding-right: 40px;
+  /* color: rgb(0, 167, 205); */
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  text-decoration: none;
+  font-size:170%;
+}
+
+nav .nav-link {
+  padding: 15px 10px 20px 15px;
+  color: rgba(255, 255, 255, 1);
+  /* color: rgba(0, 0, 0, 0.7); */
+  /* background-color: #fff; */
+  font-weight: bold;
+  text-decoration: none;
+}
+
+nav .nav-link:hover {
+  color: rgb(0, 167, 205);
+  /* border-bottom: 2px solid #2bc0e4ff; */
+}
+
+nav .nav-link.active {
+  /* color: rgb(0, 167, 205);
+  border-bottom: 2px solid #2bc0e4ff; */
+}
+
+.line-with-shadow {
+  border-top: 1px solid rgba(0, 0, 0, 0.16);; /* Single-line black border */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  margin: 0px auto 0px;
+  /* background-color: rgb(245, 245, 245); */
+}
+</style>
+
   </style>
 </head>
 <body>
-  <div id="app">
-    <PhoneQrCode />
+
+ <div class="container-white">
+  <div class="gradation-dark">
+  <nav>
+    <router-link to="/" class="nav-logo" :class="{ active: isActive('/') }">WEBSODA</router-link>
+    <router-link to="/qrcode" class="nav-link" :class="{ active: isActive('/qrcode') }">QR코드생성</router-link>
+    <router-link to="/barcode" class="nav-link" :class="{ active: isActive('/barcode') }">특수문자모음</router-link>
+    <router-link to="/tools" class="nav-link" :class="{ active: isActive('/tools') }">웹에디터</router-link>
+  </nav>
   </div>
+  <!-- <div class="nav-sub">
+    <router-link to="/barcode" class="nav-sub-link" :class="{ active: isActive('/barcode') }">QR코드를 다양하게 활용할 수 있어요. -></router-link>
+  </div>
+  <div class="line-with-shadow"></div> -->
+</div>
 
-  <script>
-  import PhoneQrCode from './PhoneQrCode.vue'
 
-  const app = Vue.createApp({})
-  app.component('PhoneQrCode', PhoneQrCode)
-  app.mount('#app')
-  </script>
+  
 </body>
 </html>

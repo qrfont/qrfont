@@ -1,0 +1,44 @@
+/* top menu */
+/* navy #282a35 chartreuse #7FFF00 indigo  navy2 232f3eff  style="padding: 20px 0;" */
+.w3-menu,.w3-hover-menu:hover{color:#000!important;background-color:#ffff!important;} 
+.w3-navy,.w3-hover-navy:hover{color:#fff!important;background-color:#232f3e!important;}
+.w3-cyan2,.w3-hover-cyan2:hover{color:#fff!important;background-color:#2199a7!important;}
+.w3-logo,.w3-hover-logo:hover{color:#147772ff!important;background-color:#fff!important}
+
+.w3-border-menu,.w3-hover-border-menu:hover{border-color:#147772ff!important}
+.w3-text-menu,.w3-hover-text-menu:hover{color:#147772ff!important}
+
+/* color */
+.w3-light-sky,.w3-hover-light-sky:hover{color:#000!important;background-color:#e8f0feff!important}
+.w3-yellow2{color:#000!important;background-color:#f9f9f9ff!important}
+
+
+
+ /* input border = 0  */
+ .w3-input.w3-border-0:focus {
+  outline: none; /* Remove focus outline */
+  box-shadow: none; /* Remove focus shadow */
+ 
+}
+
+
+#myInput {
+  white-space: pre-wrap;
+}
+
+.line {
+  position: relative; /* Enable relative positioning */
+  top: -20px;
+  margin-bottom: 0; /* Remove default bottom margin */
+}
+
+.w3-border-grey,.w3-hover-border-grey:hover,.w3-border-gray,.w3-hover-border-gray:hover{border-color:#cccccc!important}
+.w3-grey2,.w3-hover-grey2:hover,.w3-gray2,.w3-hover-gray2:hover{color:#000!important;background-color:#cccccc!important}
+
+
+.w3-card9{box-shadow:0 2px 2px 0 rgba(0,0,0,0.16),0 1px 0px 0 rgba(0,0,0,0.05)}
+
+.line-with-shadow {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.16);; /* Single-line black border */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* 3px shadow below the line */
+}

@@ -1,0 +1,4 @@
+/* style.css 또는 별도의 CSS 파일 */
+.w3-hover-teal:hover {
+  background-color: teal !important;
+}

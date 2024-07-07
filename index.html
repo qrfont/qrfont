@@ -114,7 +114,29 @@ nav .nav-link.active {
   </div>
   <div class="line-with-shadow"></div> -->
 </div>
+ <h1>QR Code Generator</h1>
+    <input type="text" id="text" placeholder="Enter text" />
+    <button onclick="generateQRCode()">Generate QR Code</button>
+    <div id="qrcode"></div>
 
+    <script>
+        function generateQRCode() {
+            var text = document.getElementById("text").value;
+            var qrcodeContainer = document.getElementById("qrcode");
+
+            // Clear previous QR code
+            qrcodeContainer.innerHTML = "";
+
+            // Generate new QR code
+            QRCode.toCanvas(qrcodeContainer, text, function (error) {
+                if (error) {
+                    console.error(error);
+                } else {
+                    console.log("QR code generated!");
+                }
+            });
+        }
+    </script>
 
   
 </body>

@@ -1,2 +1,0 @@
-# qrfont.github.io
-test

@@ -1,15 +1,35 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>QRCODE</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.3.0/qrcode.min.js"></script>
 </head>
 <body>
-<div id="app">dddd</div>
+  <h1>QR Code Generator</h1>
+  <input type="text" id="qrInput" placeholder="Enter text to generate QR code">
+  <button onclick="generateQRCode()">Generate QR Code</button>
+  <div id="qrCodeContainer"></div>
+
+  <script>
+    function generateQRCode() {
+      const text = document.getElementById('qrInput').value;
+      const qrCodeContainer = document.getElementById('qrCodeContainer');
+
+      if (text) {
+        const qrCode = new QRCode(qrCodeContainer, {
+          text: text,
+          width: 200,
+          height: 200,
+          color: '#000000',
+          background: '#ffffff',
+          level: 'H'
+        });
+      } else {
+        alert('Please enter text to generate QR code.');
+      }
+    }
+  </script>
 </body>
 </html>

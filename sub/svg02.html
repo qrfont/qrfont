@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic SVG to GIF Download</title>
+  <style>
+    /* Style the spinner container */
+    .spinner-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    /* Style the SVG spinner */
+    .spinner {
+      width: 100px;
+      height: 100px;
+      fill: none;
+      stroke: #007bff;
+      stroke-width: 8;
+      stroke-linecap: round;
+      animation: rotator 1.4s linear infinite;
+    }
+
+    @keyframes rotator {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Style the download button */
+    .download-button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="spinner-container">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"><style>@keyframes slide-top{0%{transform:translateY(1px)}to{transform:translateY(-2px)}}</style><path stroke="#0A0A30" stroke-linecap="round" stroke-width="1.5" d="M6 8.55v8.334c0 .92.768 1.667 1.714 1.667h8.572c.947 0 1.714-.746 1.714-1.667V8.551m-7 2.899h2"/><path fill="#265BFF" fill-rule="evenodd" d="M4.087 5.45H3.87a.533.533 0 00-.533.532v.967c0 .295.238.533.533.533h16.26a.533.533 0 00.533-.533v-.967a.533.533 0 00-.533-.533H4.087z" clip-rule="evenodd" style="animation:slide-top 1s cubic-bezier(.86,0,.07,1) infinite alternate-reverse both"/></svg>                                      
+    
+        <path stroke="#FFD700" stroke-linecap="round" stroke-width="1.5" d="M6 8.55v8.334c0 .92.768 1.667 1.714 1.667h8.572c.947 0 1.714-.746 1.714-1.667V8.551m-7 2.899h2"/>
+        <path fill="#FFD700" fill-rule="evenodd" d="M4.087 5.45H3.87a.533.533 0 00-.533.532v.967c0 .295.238.533.533.533h16.26a.533.533 0 00.533-.533v-.967a.533.533 0 00-.533-.533H4.087z" clip-rule="evenodd" style="animation: slide-left 1s cubic-bezier(.86,0,.07,1) infinite alternate-reverse both"/>
+      </svg>
+      
+    <button class="download-button" onclick="downloadGif()">Download GIF</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gif.js.optimized/dist/gif.worker.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gif.js.optimized/dist/gif.min.js"></script>
+
+  <script>
+    function downloadGif() {
+      const spinnerContainer = document.querySelector('.spinner-container');
+      const gif = new GIF({
+        workers: 2,
+        quality: 10
+      });
+
+      const frames = 30; // Number of frames to capture for the GIF
+      const delay = 1000 / frames; // Delay between frames (in ms)
+
+      let captureFrame = (i) => {
+        if (i >= frames) {
+          gif.render();
+          return;
+        }
+
+        html2canvas(spinnerContainer).then(canvas => {
+          gif.addFrame(canvas, { copy: true, delay: delay });
+          setTimeout(() => captureFrame(i + 1), delay);
+        }).catch(error => {
+          console.error('Error capturing frame:', error);
+        });
+      };
+
+      gif.on('finished', function(blob) {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'spinner.gif';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url); // Clean up the URL object
+      });
+
+      captureFrame(0); // Start capturing frames
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+import cv2
+import moviepy.editor as mpy
+from tkinter import *
+
+from PIL import ImageTk,Image  # JPG,jfif 등 확장자 이미지 불러오기
+from moviepy.editor import *
+
+# tkinter 창을 생성합니다.
+root = Tk()
+
+# canvas를 생성합니다.
+canvas = Canvas(root, width=300, height=200)
+canvas.pack()
+
+# 이미지를 로드합니다.
+# image = cv2.imread("logo.png")
+# 로고 이미지
+img_open = Image.open("./images/logo.png").resize((90,50))
+img =ImageTk.PhotoImage(img_open)
+
+
+#tk_image = canvas.find_withtag("image")[0].tk_image
+
+#video_clip = mpy.VideoClip(tk_image)
+
+# canvas에 이미지를 넣습니다.
+ccc= canvas.create_image(0, 0, image=img)
+
+audio = AudioFileClip('lang_eng_1.mp3')
+video = ImageClip(img, duration=audio.duration)
+video = video.set_audio(audio)
+
+# 비디오 파일을 생성합니다.
+video = mpy.VideoClip(canvas.find_withtag("ccc")) #canvas.get_tk_image()
+#video_clip.set_duration(10)
+# 비디오 파일을 저장합니다.
+#video_clip.write_videofile("output.mp4")
+video = video.cutout(audio.duration - (audio.duration % (1/10)), audio.duration)
+video.write_videofile("output_2.mp4", fps=10, codec="mpeg4")
+
+
+
+
+# tkinter 창을 종료합니다.
+root.destroy()

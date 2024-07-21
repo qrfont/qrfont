@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>코드 미리보기 도구</title>
+<style>
+  /* 스타일링 예시 */
+  .editor-container {
+    display: flex;
+    height: 100vh;
+  }
+  .editor {
+    flex: 1;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    resize: none;
+  }
+  .preview {
+    flex: 1;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: auto;
+  }
+</style>
+</head>
+<body>
+  <div class="editor-container">
+    <textarea id="code" class="editor" placeholder="여기에 코드를 입력하세요..."></textarea>
+    <div id="preview" class="preview"></div>
+  </div>
+
+  <script>
+    const codeInput = document.getElementById('code');
+    const previewDiv = document.getElementById('preview');
+
+    codeInput.addEventListener('input', function() {
+      // 사용자가 코드를 입력할 때마다 미리보기 업데이트
+      const code = codeInput.value;
+      previewDiv.innerHTML = code; // 단순히 입력된 코드를 미리보기 영역에 출력하는 예시
+    });
+  </script>
+</body>
+</html>

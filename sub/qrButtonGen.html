@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>How to Create Text and Images on Canvas using Fabric.js?</title>
+    <!-- Loading the FabricJS library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.2/fabric.min.js"></script>
+</head>
+<body>
+    <canvas id="canvas" width="600" height="400" style="border:1px solid #000000;"></canvas>
+    <div>
+        <button onclick="toggleTextBox()">Toggle Textbox</button>
+        <label for="image-upload">Upload Image:</label>
+        <input type="file" id="image-upload" accept="image/*">
+        <select id="font-family">
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Pacifico">Pacifico</option>
+            <option value="VT323">VT323</option>
+            <option value="Quicksand">Quicksand</option>
+            <option value="Inconsolata">Inconsolata</option>
+        </select>
+        <button onclick="exportToSVG()">Export as SVG</button>
+        <input type="checkbox" id="always-on-top" onchange="toggleAlwaysOnTop()"> Always on Top
+    </div>
+     
+    <script>
+        var canvas = new fabric.Canvas('canvas');
+        var textbox = new fabric.Textbox('Lorem ipsum dolor sit amet', {
+            left: 50,
+            top: 50,
+            width: 150,
+            fontSize: 20,
+            visible: false, // Initially hide the textbox
+            alwaysOnTop: false // Initially not set to always on top
+        });
+        canvas.add(textbox);
+
+        // Function to toggle textbox visibility
+        function toggleTextBox() {
+            textbox.visible = !textbox.visible;
+            canvas.requestRenderAll();
+        }
+
+        // Function to handle image upload
+        document.getElementById('image-upload').addEventListener('change', function (e) {
+            var file = e.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function (f) {
+                var data = f.target.result;
+                fabric.Image.fromURL(data, function (img) {
+                    img.scaleToWidth(200); // Scale image to fit canvas
+                    canvas.add(img);
+                });
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Define an array with all fonts
+        var fonts = ["Pacifico", "VT323", "Quicksand", "Inconsolata"];
+        fonts.unshift('Times New Roman');
+
+        // Apply selected font on change
+        document.getElementById('font-family').onchange = function() {
+            var activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject.type === 'textbox') {
+                if (this.value !== 'Times New Roman') {
+                    loadAndUse(this.value);
+                } else {
+                    activeObject.set("fontFamily", this.value);
+                    canvas.requestRenderAll();
+                }
+            }
+        };
+
+        function loadAndUse(font) {
+            var myfont = new FontFaceObserver(font);
+            myfont.load()
+                .then(function() {
+                    // when font is loaded, use it.
+                    var activeObject = canvas.getActiveObject();
+                    if (activeObject && activeObject.type === 'textbox') {
+                        activeObject.set("fontFamily", font);
+                        canvas.requestRenderAll();
+                    }
+                }).catch(function(e) {
+                    console.log(e);
+                    alert('Font loading failed ' + font);
+                });
+        }
+
+        // Function to export canvas as SVG
+        function exportToSVG() {
+            // Get SVG representation of canvas
+            var svg = canvas.toSVG();
+
+            // Create a blob from SVG data
+            var blob = new Blob([svg], {type: "image/svg+xml"});
+            
+            // Create a link element to download the SVG
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'canvas.svg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Function to toggle textbox always on top
+        function toggleAlwaysOnTop() {
+            var activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject.type === 'textbox') {
+                activeObject.alwaysOnTop = document.getElementById('always-on-top').checked;
+                canvas.requestRenderAll();
+            }
+        }
+    </script>
+</body>
+</html>

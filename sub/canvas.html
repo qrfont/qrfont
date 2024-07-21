@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>How to Create Text and Images on Canvas using Fabric.js?</title>
+    <!-- Loading the FabricJS library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.2/fabric.min.js"></script>
+    <!-- Loading FontFaceObserver for web fonts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.1.0/fontfaceobserver.standalone.js"></script>
+    <!-- Loading Google Web Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=VT323&family=Quicksand:wght@300;400;500;600;700&family=Inconsolata:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&family=Lato:wght@300;400;700&family=Montserrat:wght@300;400;600;700&family=Oswald:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Bebas+Neue&family=Anton&family=Baloo+2:wght@400;500;600;700&family=Black+Han+Sans&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Font Family Selector</title>
+    <style>
+        #canvas-container {
+            width: 100%;
+            height: auto;
+        }
+        canvas {
+            width: 100%;
+            height: auto;
+        }
+ 
+
+        .box-2.box-1 {
+            margin: 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .box-2 button {
+            background-color: #007bff; /* 기본 버튼 배경색 */
+            color: white; /* 버튼 글자색 */
+            border: none; /* 버튼 테두리 제거 */
+            border-radius: 5px; /* 버튼 모서리 둥글게 */
+            padding: 10px 20px; /* 버튼 내부 여백 */
+            font-size: 16px; /* 버튼 글자 크기 */
+            cursor: pointer; /* 버튼에 마우스 커서가 올 때 포인터로 변경 */
+            transition: background-color 0.3s, transform 0.3s; /* 배경색과 변형의 부드러운 전환 */
+        }
+
+        .box-2 button:hover {
+            background-color: #0056b3; /* 버튼 호버 시 배경색 변경 */
+        }
+
+        .box-2 button:active {
+            background-color: #004080; /* 버튼 클릭 시 배경색 변경 */
+            transform: scale(0.98); /* 버튼 클릭 시 약간의 축소 효과 */
+        }
+
+        .box-2 button:focus {
+            outline: none; /* 버튼 포커스 시 외곽선 제거 */
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); /* 포커스 시 그림자 효과 추가 */
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container">
+        <canvas id="canvas" width="600" height="400" style="border:1px solid #000000;"></canvas>
+    </div>
+    <div class="box-1">
+        <button onclick="addTextBox()">Add Textbox</button>
+        <label for="image-upload">Upload Image:</label>
+        <input type="file" id="image-upload" accept="image/*">
+        <label for="font-family">Font Family:</label>
+        <select id="font-family">
+            <option value="Pacifico">Pacifico</option>
+            <option value="VT323">VT323</option>
+            <option value="Quicksand">Quicksand</option>
+            <option value="Inconsolata">Inconsolata</option>
+            <option value="Roboto">Roboto</option>
+            <option value="Open Sans">Open Sans</option>
+            <option value="Lato">Lato</option>
+            <option value="Montserrat">Montserrat</option>
+            <option value="Oswald">Oswald</option>
+            <option value="Raleway">Raleway</option>
+            <option value="Poppins">Poppins</option>
+            <option value="Bebas Neue">Bebas Neue</option>
+            <option value="Anton">Anton</option>
+            <option value="Baloo 2">Baloo 2</option>
+            <option value="Black Han Sans">Black Han Sans</option>
+        </select>
+        <button onclick="makeBold()">Make Text Bold</button>
+        <label for="text-color">Text Color:</label>
+        <input type="color" id="text-color" value="#000000">
+        <label for="bg-color">Background Color:</label>
+        <input type="color" id="bg-color" value="#ffffff">
+    </div>
+    <div class="box-2">
+        <button onclick="deleteSelected()">Delete Selected</button>
+        <button onclick="exportToSVG()">Export as SVG</button>
+        <button onclick="exportToImage()">Export as Image</button>
+    </div>
+     
+    <script>
+        var canvas = new fabric.Canvas('canvas');
+
+        // Adjust canvas size based on the window size
+        function resizeCanvas() {
+            var container = document.getElementById('canvas-container');
+            canvas.setWidth(container.clientWidth);
+            canvas.setHeight(container.clientWidth * 2 / 3);
+            canvas.renderAll();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('load', resizeCanvas);
+
+        // Function to add a new textbox
+        function addTextBox() {
+            var textbox = new fabric.Textbox('New Textbox', {
+                left: 50,
+                top: 50,
+                width: 150,
+                fontSize: 20
+            });
+            canvas.add(textbox);
+            canvas.setActiveObject(textbox);
+        }
+
+        // Function to handle image upload
+        document.getElementById('image-upload').addEventListener('change', function (e) {
+            var file = e.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function (f) {
+                var data = f.target.result;
+                fabric.Image.fromURL(data, function (img) {
+                    img.scaleToWidth(200); // Scale image to fit canvas
+                    canvas.add(img);
+                });
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Define an array with all fonts
+        var fonts = ["Pacifico", "VT323", "Quicksand", "Inconsolata"];
+        fonts.unshift('Times New Roman');
+
+        // Apply selected font on change
+        document.getElementById('font-family').onchange = function() {
+            var activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject.type === 'textbox') {
+                if (this.value !== 'Times New Roman') {
+                    loadAndUse(this.value);
+                } else {
+                    activeObject.set("fontFamily", this.value);
+                    canvas.requestRenderAll();
+                }
+            }
+        };
+
+        function loadAndUse(font) {
+            var myfont = new FontFaceObserver(font);
+            myfont.load()
+                .then(function() {
+                    // when font is loaded, use it.
+                    var activeObject = canvas.getActiveObject();
+                    if (activeObject && activeObject.type === 'textbox') {
+                        activeObject.set("fontFamily", font);
+                        canvas.requestRenderAll();
+                    }
+                }).catch(function(e) {
+                    console.log(e);
+                    alert('Font loading failed ' + font);
+                });
+        }
+
+        // Function to make text bold
+        function makeBold() {
+            var activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject.type === 'textbox') {
+                activeObject.set("fontWeight", activeObject.fontWeight === 'bold' ? 'normal' : 'bold');
+                canvas.requestRenderAll();
+            }
+        }
+
+        // Function to change text color
+        document.getElementById('text-color').addEventListener('input', function() {
+            var activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject.type === 'textbox') {
+                activeObject.set("fill", this.value);
+                canvas.requestRenderAll();
+            }
+        });
+
+        // Function to change background color
+        document.getElementById('bg-color').addEventListener('input', function() {
+            var bgColor = this.value;
+            canvas.setBackgroundColor(bgColor, canvas.renderAll.bind(canvas));
+        });
+
+        // Function to delete selected object
+        function deleteSelected() {
+            var activeObject = canvas.getActiveObject();
+            if (activeObject) {
+                canvas.remove(activeObject);
+            }
+        }
+
+        // Function to export canvas as SVG
+        function exportToSVG() {
+            // Get SVG representation of canvas
+            var svg = canvas.toSVG();
+
+            // Create a blob from SVG data
+            var blob = new Blob([svg], {type: "image/svg+xml"});
+            
+            // Create a link element to download the SVG
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'canvas.svg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Function to export canvas as Image
+        function exportToImage() {
+            var dataURL = canvas.toDataURL({
+                format: 'png',
+                quality: 1
+            });
+
+            // Create a link element to download the image
+            var a = document.createElement('a');
+            a.href = dataURL;
+            a.download = 'canvas.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Event listener for delete key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Delete') {
+                deleteSelected();
+            }
+        });
+    </script>
+</body>
+</html>

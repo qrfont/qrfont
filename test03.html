@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>컬러 선택 및 이미지 저장</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        #colorDisplay {
+            width: 100px;
+            height: 100px;
+            margin: 20px auto;
+            border: 1px solid #000;
+        }
+        #downloadOptions {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>컬러 선택 및 이미지 저장</h1>
+    <input type="color" id="colorPicker" />
+    <div id="colorDisplay"></div>
+    <div id="colorValue">선택된 컬러: #FFFFFF</div>
+    <div id="downloadOptions">
+        <button onclick="saveImage('png')">이미지 저장 (PNG)</button>
+        <button onclick="saveImage('jpeg')">이미지 저장 (JPEG)</button>
+    </div>
+    <canvas id="canvas" style="display: none;"></canvas>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById('colorPicker').addEventListener('input', function() {
+                const color = this.value;
+                document.getElementById('colorDisplay').style.backgroundColor = color;
+                document.getElementById('colorValue').innerText = `선택된 컬러: ${color}`;
+            });
+        });
+
+        function saveImage(format) {
+            const color = document.getElementById('colorPicker').value;
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = 100;
+            canvas.height = 100;
+            
+            // Draw the color on canvas
+            ctx.fillStyle = color;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Create a link to download the image
+            const link = document.createElement('a');
+            link.download = `color_image.${format}`;
+            link.href = canvas.toDataURL(`image/${format}`);
+            link.click();
+        }
+    </script>
+</body>
+</html>
